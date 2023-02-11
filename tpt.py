@@ -86,7 +86,7 @@ def touch_press(x, y, delay=0.15, username="CarsonKompon"):
     server.clear_touch()
     server.send()
 
-def touch_drag(x1, y1, x2, y2, delay=0.1):
+def touch_drag(x1, y1, x2, y2, delay=0.1, username="CarsonKompon"):
     print("DRAG: " + str(x1) + ", " + str(y1) + " -> " + str(x2) + ", " + str(y2))
     global server
     x1 = max(0, min(319, int(x1)))
@@ -139,11 +139,11 @@ def process_command(message: str, username: str):
 
     # Drag Command
     elif (command[0] == "drag" or command[0] == "touch") and len(command) == 5:
-        touch_drag(command[1], command[2], command[3], command[4])
+        touch_drag(command[1], command[2], command[3], command[4], username=username)
     
     # Hold Command
     elif (command[0] == "hold" or command[0] == "touch") and len(command) == 4:
-        touch_press(command[1], command[2], max(0, min(float(command[3]) / 10, 5)))
+        touch_press(command[1], command[2], max(0, min(float(command[3]) / 10, 5)), username=username)
 
     # Shoulder Buttons
     elif command[0] == "l":
