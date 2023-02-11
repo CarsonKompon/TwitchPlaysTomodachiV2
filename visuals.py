@@ -35,7 +35,10 @@ class Touch:
         dot.opacity = opacity
         dot.draw()
         if self.username != "":
-            label = pyglet.text.Label(self.username, font_name='Arial', font_size=8, x=self.x, y=self.y-8, anchor_x='center', anchor_y='top', color=(*self.color, min(opacity*2,255)), batch=batch)
+            yoff = self.y-8
+            if self.y < 120:
+                yoff = self.y+23
+            label = pyglet.text.Label(self.username, font_name='Arial', font_size=8, x=self.x, y=yoff, anchor_x='center', anchor_y='top', color=(*self.color, min(opacity*2,255)), batch=batch)
             label.draw()
 
 def new_touch(x, y, size, username = "CarsonKompon"):
