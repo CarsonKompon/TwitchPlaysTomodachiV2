@@ -1,3 +1,4 @@
+requests
 pyglet
 discord.py
 python-dotenv
