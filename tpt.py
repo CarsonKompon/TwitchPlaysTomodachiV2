@@ -122,9 +122,9 @@ def cstick_press(button, delay=0.1):
 
 # Process commands
 def process_command(message: str, username: str):
-    print("COMMAND: " + message)
     command = message.replace("\r","").replace("\n","").split(" ")
     command[0] = command[0].lower()
+    validCommand = True
 
     # Alert Mods Command
     if command[0].startswith("!mod") or command[0].startswith("!alert"):
@@ -144,6 +144,12 @@ def process_command(message: str, username: str):
     # Hold Command
     elif (command[0] == "hold" or command[0] == "touch") and len(command) == 4:
         touch_press(command[1], command[2], max(0, min(float(command[3]) / 10, 5)))
+
+    # Shoulder Buttons
+    elif command[0] == "l":
+        button_press(HIDButtons.L)
+    elif command[0] == "r":
+        button_press(HIDButtons.R)
 
     # D-Pad Commands
     elif command[0] == "up" or command[0] == "dup":
@@ -192,6 +198,13 @@ def process_command(message: str, username: str):
     # Wait Command
     elif command[0] == "wait" and len(command) == 2:
         time.sleep(max(0, min(float(command[1]) / 10, 5)))
+
+    # If the command is not valid
+    else:
+        validCommand = False
+    
+    if validCommand:
+        print("COMMAND: " + message)
 
 # Twitch message handling
 def handle_message():
