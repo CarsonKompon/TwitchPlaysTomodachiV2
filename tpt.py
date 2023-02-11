@@ -19,6 +19,60 @@ from visuals import draw_touches, new_touch, draw_drags, new_drag
 
 ENV = dotenv_values()
 
+# Keyboard Key Positions
+KEYBOARD_KEYS = {
+    "1": (15, 80),
+    "2": (40, 80),
+    "3": (65, 80),
+    "4": (90, 80),
+    "5": (115, 80),
+    "6": (140, 80),
+    "7": (165, 80),
+    "8": (190, 80),
+    "9": (215, 80),
+    "0": (240, 80),
+    "-": (265, 80),
+    "q": (16, 102),
+    "w": (40, 102),
+    "e": (70, 102),
+    "r": (95, 102),
+    "t": (120, 102),
+    "y": (145, 102),
+    "u": (170, 102),
+    "i": (195, 102),
+    "o": (220, 102),
+    "p": (245, 102),
+    "a": (20, 125),
+    "s": (45, 125),
+    "d": (70, 125),
+    "f": (95, 125),
+    "g": (120, 125),
+    "h": (145, 125),
+    "j": (170, 125),
+    "k": (195, 125),
+    "l": (222, 125),
+    ":": (247, 125),
+    "[": (273, 125),
+    "]": (300, 125),
+    "z": (25, 146),
+    "x": (50, 146),
+    "c": (75, 146),
+    "v": (100, 146),
+    "b": (125, 146),
+    "n": (150, 146),
+    "m": (175, 146),
+    ",": (200, 146),
+    ".": (225, 146),
+    "'": (250, 146),
+    "/": (275, 146),
+
+    "backspace": (296, 80),
+    "enter": (296, 102),
+    "caps": (30, 170),
+    "shift": (85, 170),
+    "space": (163, 170),
+}
+
 # Init Pyglet
 window = pyglet.window.Window(320, 240)
 
@@ -195,6 +249,12 @@ def process_command(message: str, username: str):
             circlepad_press(CPAD_Commands.CPADRIGHT, max(0, min(float(command[1]) / 10, 5)))
         else:
             circlepad_press(CPAD_Commands.CPADRIGHT)
+
+    # Type Command
+    elif command[0] == "type" and len(command) > 1:
+        if(hasattr(KEYBOARD_KEYS, command[1].lower())):
+            pos = getattr(KEYBOARD_KEYS, command[1].lower())
+            touch_press(pos[0], pos[1], username=username)
 
     # Wait Command
     elif command[0] == "wait" and len(command) == 2:
