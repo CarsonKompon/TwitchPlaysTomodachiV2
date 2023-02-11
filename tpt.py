@@ -66,6 +66,7 @@ def alert_mods(message):
 
 # Functions for 3DS-related input
 def button_press(button, delay=0.1):
+    print("BUTTON: " + str(button) + ", " + str(delay) + "s")
     global server
     server.press(button)
     server.send()
@@ -74,6 +75,7 @@ def button_press(button, delay=0.1):
     server.send()
 
 def touch_press(x, y, delay=0.15, username="CarsonKompon"):
+    print("TOUCH: " + str(x) + ", " + str(y) + ", " + str(delay) + "s (" + username + ")")
     global server, visualTouches
     x = max(0, min(319, int(x)))
     y = max(0, min(239, int(y)))
@@ -85,6 +87,7 @@ def touch_press(x, y, delay=0.15, username="CarsonKompon"):
     server.send()
 
 def touch_drag(x1, y1, x2, y2, delay=0.1):
+    print("DRAG: " + str(x1) + ", " + str(y1) + " -> " + str(x2) + ", " + str(y2))
     global server
     x1 = max(0, min(319, int(x1)))
     y1 = max(0, min(239, int(y1)))
@@ -100,6 +103,7 @@ def touch_drag(x1, y1, x2, y2, delay=0.1):
     server.send()
 
 def circlepad_press(button, delay=0.1):
+    print("CIRCLEPAD: " + str(button) + ", " + str(delay) + "s")
     global server
     server.circle_pad_set(button)
     server.send()
@@ -108,6 +112,7 @@ def circlepad_press(button, delay=0.1):
     server.send()
 
 def cstick_press(button, delay=0.1):
+    print("CSTICK: " + str(button) + ", " + str(delay) + "s")
     global server
     server.n3ds_cstick_set(button)
     server.send()
