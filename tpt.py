@@ -79,7 +79,7 @@ def touch_press(x, y, delay=0.15, username="CarsonKompon"):
     global server, visualTouches
     x = max(0, min(319, int(x)))
     y = max(0, min(239, int(y)))
-    new_touch(float(x), float(y), 16, (255, 0, 0), username)
+    new_touch(float(x), float(y), 16, username)
     server.touch(x, y)
     server.send()
     time.sleep(delay)

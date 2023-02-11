@@ -1,3 +1,6 @@
+import colorsys
+import random
+
 import pyglet
 
 # Lerp helper function
@@ -8,13 +11,15 @@ def lerp(a: float, b: float, t: float) -> float:
 touches = []
 class Touch:
 
-    def __init__(self, x, y, size, color, username="CarsonKompon"):
+    def __init__(self, x, y, size, username="CarsonKompon"):
+        random.seed(username)
+        color = colorsys.hsv_to_rgb(random.random(), 0.8, 1)
         self.x = x
         self.y = 240-y
         self.r = 0
         self.opacity = 1
         self.size = size
-        self.color = color
+        self.color = (int(color[0]*255), int(color[1]*255), int(color[2]*255))
         self.username = username
 
     def draw(self, batch):
@@ -33,8 +38,8 @@ class Touch:
             label = pyglet.text.Label(self.username, font_name='Arial', font_size=8, x=self.x, y=self.y-8, anchor_x='center', anchor_y='top', color=(*self.color, min(opacity*2,255)), batch=batch)
             label.draw()
 
-def new_touch(x, y, size, color, username = "CarsonKompon"):
-    touches.append(Touch(x, y, size, color, username))
+def new_touch(x, y, size, username = "CarsonKompon"):
+    touches.append(Touch(x, y, size, username))
 
 def draw_touches():
     global touches
