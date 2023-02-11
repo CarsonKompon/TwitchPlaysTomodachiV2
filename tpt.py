@@ -15,7 +15,7 @@ import discord
 from dotenv import dotenv_values
 
 from tppflush import *
-from visuals import draw_touches, new_touch
+from visuals import draw_touches, new_touch, draw_drags, new_drag
 
 ENV = dotenv_values()
 
@@ -65,7 +65,7 @@ def alert_mods(message):
         lastMessageSent = datetime.now()
 
 # Functions for 3DS-related input
-def button_press(button, delay=0.1):
+def button_press(button, delay=0.15):
     print("BUTTON: " + str(button) + ", " + str(delay) + "s")
     global server
     server.press(button)
@@ -79,7 +79,7 @@ def touch_press(x, y, delay=0.15, username="CarsonKompon"):
     global server, visualTouches
     x = max(0, min(319, int(x)))
     y = max(0, min(239, int(y)))
-    new_touch(float(x), float(y), 16, username)
+    new_touch(float(x), float(y), username)
     server.touch(x, y)
     server.send()
     time.sleep(delay)
@@ -93,6 +93,7 @@ def touch_drag(x1, y1, x2, y2, delay=0.1, username="CarsonKompon"):
     y1 = max(0, min(239, int(y1)))
     x2 = max(0, min(319, int(x2)))
     y2 = max(0, min(239, int(y2)))
+    new_drag(float(x1), float(y1), float(x2), float(y2), username)
     server.touch(x1, y1)
     server.send()
     time.sleep(delay)
@@ -345,5 +346,7 @@ def on_draw():
     # Draw visual touches
     draw_touches()
 
+    # Draw visual drags
+    draw_drags()
 
 pyglet.app.run()
