@@ -117,6 +117,7 @@ def cstick_press(button, delay=0.1):
 
 # Process commands
 def process_command(message: str, username: str):
+    print("COMMAND: " + message)
     command = message.replace("\r","").replace("\n","").split(" ")
     command[0] = command[0].lower()
 
