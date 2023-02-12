@@ -274,34 +274,34 @@ def process_command(message: str, username: str):
 def handle_message():
     global sock
 
-    try:
-        # Check for new messages
-        response = sock.recv(2048).decode("utf-8")
-        
-        if response.startswith("PING"):
-            sock.send("PONG\n".encode("utf-8"))
-        elif len(response) > 0:
-            if response.startswith(":"):
-                messageTime = datetime.now().strftime("%H:%M:%S")
-                bundle = re.search(':(.*)\!.*@.*\.tmi\.twitch\.tv PRIVMSG #(.*) :(.*)', response)
-                if bundle is not None:
-                    username, channel, pureMessage = bundle.groups()
-                    print(f"[{messageTime}] {username}: {pureMessage}")
+    while True:
+        try:
+            # Check for new messages
+            response = sock.recv(2048).decode("utf-8")
+            
+            if response.startswith("PING"):
+                sock.send("PONG\n".encode("utf-8"))
+            elif len(response) > 0:
+                if response.startswith(":"):
+                    messageTime = datetime.now().strftime("%H:%M:%S")
+                    bundle = re.search(':(.*)\!.*@.*\.tmi\.twitch\.tv PRIVMSG #(.*) :(.*)', response)
+                    if bundle is not None:
+                        username, channel, pureMessage = bundle.groups()
+                        print(f"[{messageTime}] {username}: {pureMessage}")
 
-                    commands = pureMessage.split(";")
+                        commands = pureMessage.split(";")
 
-                    for command in commands:
-                        commandQueue.append({
-                            "message": command,
-                            "username": username
-                        })
-    except Exception as e:
-        print("WHOA! Something went wrong! Let's try reconnecting...")
-        sock.close()
-        time.sleep(1)
-        chat_connect()
-        time.sleep(1)
-    handle_message()
+                        for command in commands:
+                            commandQueue.append({
+                                "message": command,
+                                "username": username
+                            })
+        except Exception as e:
+            print("WHOA! Something went wrong! Let's try reconnecting...")
+            sock.close()
+            time.sleep(1)
+            chat_connect()
+            time.sleep(1)
 threadMessageHandler = threading.Thread(target=handle_message, daemon=True)
 threadMessageHandler.start()
 
@@ -346,6 +346,14 @@ def on_key_press(symbol, modifiers):
         server.press(HIDButtons.DPADRIGHT)
         server.send()
 
+    # A and S for L and R
+    elif symbol == pyglet.window.key.A:
+        server.press(HIDButtons.L)
+        server.send()
+    elif symbol == pyglet.window.key.S:
+        server.press(HIDButtons.R)
+        server.send()
+
     # Z and X for A and B
     elif symbol == pyglet.window.key.Z:
         server.press(HIDButtons.A)
@@ -385,6 +393,14 @@ def on_key_release(symbol, modifiers):
         server.send()
     elif symbol == pyglet.window.key.RIGHT:
         server.unpress(HIDButtons.DPADRIGHT)
+        server.send()
+
+    # A and S for L and R
+    elif symbol == pyglet.window.key.A:
+        server.unpress(HIDButtons.L)
+        server.send()
+    elif symbol == pyglet.window.key.S:
+        server.unpress(HIDButtons.R)
         server.send()
 
     # Z and X for A and B
