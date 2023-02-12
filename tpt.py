@@ -104,7 +104,7 @@ commandQueue = []
 def error_handle_exception(exc_type, exc_value, exc_traceback):
     log_entry = ''.join(traceback.format_exception(exc_type, exc_value, exc_traceback))
     print(log_entry)
-    webhook = discord.SyncWebhook.from_url(ENV["DISCORD_WEBHOOK"])
+    webhook = discord.SyncWebhook.from_url(ENV["PRIVATE_WEBHOOK"])
     webhook.send(log_entry)
 sys.excepthook = error_handle_exception
 
