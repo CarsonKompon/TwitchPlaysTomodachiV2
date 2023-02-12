@@ -177,7 +177,7 @@ def cstick_press(button, delay=0.1):
 
 # Process commands
 def process_command(message: str, username: str):
-    command = message.replace("\r","").replace("\n","").split(" ")
+    command = message.replace("\r","").replace("\n","").strip().split(" ")
     command[0] = command[0].lower()
     validCommand = True
 
@@ -312,7 +312,10 @@ def handle_command_queue():
     while True:
         if len(commandQueue) > 0:
             command = commandQueue.pop(0)
-            process_command(command["message"], command["username"])
+            try:
+                process_command(command["message"], command["username"])
+            except Exception as e: 
+                print("Error processing command: " + str(e))
         time.sleep(0.05)
 threadCommandQueueHandler = threading.Thread(target=handle_command_queue, daemon=True)
 threadCommandQueueHandler.start()
