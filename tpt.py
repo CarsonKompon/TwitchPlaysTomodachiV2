@@ -252,8 +252,11 @@ def process_command(message: str, username: str):
 
     # Type Command
     elif command[0] == "type" and len(command) > 1:
-        if(hasattr(KEYBOARD_KEYS, command[1].lower())):
-            pos = getattr(KEYBOARD_KEYS, command[1].lower())
+        print("TYPE: " + str(command[1]))
+        
+        if(command[1].lower() in KEYBOARD_KEYS):
+            pos = KEYBOARD_KEYS[command[1].lower()]
+            print("no way")
             touch_press(pos[0], pos[1], username=username)
 
     # Wait Command
