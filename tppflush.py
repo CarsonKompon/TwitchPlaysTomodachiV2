@@ -47,9 +47,8 @@ def bytearray_not(arr):
 
 class LumaInputServer():
 	def __init__(self, server, port=4950):
-		self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		port = 4950
-		self.socket.connect((server, port))
+		self.server = server
+		self.port = port
 
 		self.CPAD_BOUND = 0x5d0
 		self.CPP_BOUND = 0x7f #what does this stand for? Circle Pad Pro?
@@ -186,8 +185,13 @@ class LumaInputServer():
 			self.n3ds_cstick_set(CSTICK_Commands.CSTICKNEUTRAL)
 
 	def send(self, print_sent=False):
-		hid_buttons = self.current_pressed_buttons.to_bytes(4,byteorder='little')
-		hid_state = bytearray_not(hid_buttons)
+		#hid_buttons = self.current_pressed_buttons.to_bytes(4,byteorder='little')
+		hid_state = 0xfff
+
+		for btn in HIDButtons:
+			if btn in self.current_pressed_buttons:
+				hid_state ^= btn
+		hid_state = hid_state.to_bytes(4,byteorder='little')
 
 		circle_state = bytearray.fromhex("00088000")
 		if self.circle_pad_coords[0] != 0 or self.circle_pad_coords[1] != 0: # "0x5d0 is the upper/lower bound of circle pad input", says stary2001
@@ -196,13 +200,13 @@ class LumaInputServer():
 			y = ((y * self.CPAD_BOUND) // 32768) + 2048
 			circle_state = (x | (y << 12)).to_bytes(4,byteorder='little')
 
-		touch_state = bytearray.fromhex("20000000")
+		touch_state = 0x20000000
 		if(self.touch_pressed):
 			x,y = self.current_touch_coords
-			x = (x * 4096) // self.TOUCHSCREEN_SIZES[0]
-			y = (y * 4096) // self.TOUCHSCREEN_SIZES[1]
-			touch_state = (x | (y << 12) | (0x01 << 24)).to_bytes(4,byteorder='little')
-
+			x = (x * 0xfff) // self.TOUCHSCREEN_SIZES[0]
+			y = (y * 0xfff) // self.TOUCHSCREEN_SIZES[1]
+			touch_state = (1 << 24) | (y << 12) | x
+		touch_state = touch_state.to_bytes(4,byteorder='little')
 
 		n3ds_exclusives_state = bytearray.fromhex("81008080")
 		if self.cstick_coords[0] != 0 or self.cstick_coords[1] != 0 or self.zlzr_state != 0:
@@ -225,7 +229,10 @@ class LumaInputServer():
 		toSend[12:16] = n3ds_exclusives_state
 		toSend[16:20] = special_buttons
 
-		self.socket.send(toSend)
+		sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		sock.connect((self.server, self.port))
+		sock.send(toSend)
+		sock.close()
 
 		if print_sent:
 			print(toSend)

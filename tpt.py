@@ -316,6 +316,7 @@ def handle_command_queue():
                 process_command(command["message"], command["username"])
             except Exception as e: 
                 print("Error processing command: " + str(e))
+        server.send()
         time.sleep(0.05)
 threadCommandQueueHandler = threading.Thread(target=handle_command_queue, daemon=True)
 threadCommandQueueHandler.start()
