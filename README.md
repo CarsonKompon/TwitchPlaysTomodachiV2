@@ -1,6 +1,6 @@
 # TwitchPlaysTomodachiV2
 
-A self-contained python script that send InputRedirection commands to a Nintendo 3DS with Lumas3DS installed.
+A self-contained python script that send InputRedirection commands to a Nintendo 3DS with Luma3DS installed.
 
 Built for TwitchPlaysTomodachi, but can be used for any other game and purpose.
 
