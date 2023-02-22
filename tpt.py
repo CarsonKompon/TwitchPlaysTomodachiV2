@@ -210,9 +210,9 @@ def process_command(message: str, username: str):
             touch_press(0, 120, username=username)
         elif "middle right" in message:
             touch_press(319, 120, username=username)
-        elif "middle" or "center" in message:
+        elif command[1] == "middle" or command[1] == "center":
             touch_press(160, 120, username=username)
-        elif "random" in message:
+        elif command[1] == "random":
             touch_press(random.randint(0, 319), random.randint(0, 239), username=username)
         # Touch Coordinates
         elif len(command) == 3:
