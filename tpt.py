@@ -181,13 +181,15 @@ def process_command(message: str, username: str):
     command = message.replace("\r","").replace("\n","").strip().split(" ")
     command[0] = command[0].lower()
     validCommand = True
+    canAlertMods = True
 
     # Alert Mods Command
-    if command[0].startswith("!mod") or command[0].startswith("!alert"):
+    if canAlertMods and (command[0].startswith("!mod") or command[0].startswith("!alert")):
         if len(command) > 1:
             alert_mods(username + ": " + (" ".join(command[1:])))
         else:
             alert_mods(username + " has requested assistance!")
+        canAlertMods = False
 
     # Touch Command
     elif command[0] == "touch":
