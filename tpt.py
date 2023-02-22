@@ -189,8 +189,29 @@ def process_command(message: str, username: str):
             alert_mods(username + " has requested assistance!")
 
     # Touch Command
-    elif command[0] == "touch" and len(command) == 3:
-        touch_press(command[1], command[2], username=username)
+    elif command[0] == "touch":
+        # Touch Custom Positions
+        if "top left" in message:
+            touch_press(0, 0, username=username)
+        elif "top right" in message:
+            touch_press(319, 0, username=username)
+        elif "top middle" in message:
+            touch_press(160, 0, username=username)
+        elif "bottom left" in message:
+            touch_press(0, 239, username=username)
+        elif "bottom right" in message:
+            touch_press(319, 239, username=username)
+        elif "bottom middle" in message:
+            touch_press(160, 239, username=username)
+        elif "middle left" in message:
+            touch_press(0, 120, username=username)
+        elif "middle right" in message:
+            touch_press(319, 120, username=username)
+        elif "middle" or "center" in message:
+            touch_press(160, 120, username=username)
+        # Touch Coordinates
+        elif len(command) == 3:
+            touch_press(command[1], command[2], username=username)
 
     # Drag Command
     elif (command[0] == "drag" or command[0] == "touch") and len(command) == 5:
@@ -202,9 +223,15 @@ def process_command(message: str, username: str):
 
     # Shoulder Buttons
     elif command[0] == "l":
-        button_press(HIDButtons.L)
+        if len(command) == 2:
+            button_press(HIDButtons.L, max(0, min(float(command[1]) / 10, 5)))
+        else:
+            button_press(HIDButtons.L)
     elif command[0] == "r":
-        button_press(HIDButtons.R)
+        if len(command) == 2:
+            button_press(HIDButtons.R, max(0, min(float(command[1]) / 10, 5)))
+        else:
+            button_press(HIDButtons.R)
 
     # D-Pad Commands
     elif command[0] == "up" or command[0] == "dup":
