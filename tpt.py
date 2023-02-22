@@ -8,6 +8,7 @@ import sys
 import traceback
 import socket
 import threading
+import random
 from datetime import datetime
 
 import pyglet
@@ -209,6 +210,8 @@ def process_command(message: str, username: str):
             touch_press(319, 120, username=username)
         elif "middle" or "center" in message:
             touch_press(160, 120, username=username)
+        elif "random" in message:
+            touch_press(random.randint(0, 319), random.randint(0, 239), username=username)
         # Touch Coordinates
         elif len(command) == 3:
             touch_press(command[1], command[2], username=username)
