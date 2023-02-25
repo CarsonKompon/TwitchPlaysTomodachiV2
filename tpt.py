@@ -225,6 +225,28 @@ def process_command(message: str, username: str):
     # Hold Command
     elif (command[0] == "hold" or command[0] == "touch") and len(command) == 4:
         touch_press(command[1], command[2], max(0, min(float(command[3]) / 10, 5)), username=username)
+    
+    # Face Buttons
+    elif command[0] == "a":
+        if len(command) == 2:
+            button_press(HIDButtons.A, max(0, min(float(command[1]) / 10, 5)))
+        else:
+            button_press(HIDButtons.A)
+    elif command[0] == "b":
+        if len(command) == 2:
+            button_press(HIDButtons.B, max(0, min(float(command[1]) / 10, 5)))
+        else:
+            button_press(HIDButtons.B)
+    elif command[0] == "x":
+        if len(command) == 2:
+            button_press(HIDButtons.X, max(0, min(float(command[1]) / 10, 5)))
+        else:
+            button_press(HIDButtons.X)
+    elif command[0] == "y":
+        if len(command) == 2:
+            button_press(HIDButtons.Y, max(0, min(float(command[1]) / 10, 5)))
+        else:
+            button_press(HIDButtons.Y)
 
     # Shoulder Buttons
     elif command[0] == "l":
