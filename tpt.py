@@ -264,7 +264,7 @@ def process_command(message: str, username: str):
     # Mash Buttons
     elif command[0] == "mash":
         mashTime = 3
-        if len(command) == 3
+        if len(command) == 3:
             mashTime = max(0, min(float(command[2]) / 10, 5))
         if command[1] == "a":
             mash_button(HIDButtons.A, mashTime)
