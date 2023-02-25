@@ -176,11 +176,11 @@ def cstick_press(button, delay=0.1):
     server.n3ds_cstick_set(CSTICK_Commands.CSTICKNEUTRAL)
     server.send()
 
-def mash_button(button, time=1):
-    print("MASH: " + str(button) + ", " + str(time) + "s")
+def mash_button(button, mashTime=1):
+    print("MASH: " + str(button) + ", " + str(mashTime) + "s")
     global server
     timePassed = 0
-    while timePassed < time:
+    while timePassed < mashTime:
         server.press(button)
         server.send()
         time.sleep(0.1)
