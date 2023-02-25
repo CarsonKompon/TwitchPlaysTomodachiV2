@@ -176,6 +176,19 @@ def cstick_press(button, delay=0.1):
     server.n3ds_cstick_set(CSTICK_Commands.CSTICKNEUTRAL)
     server.send()
 
+def mash_button(button, time=1):
+    print("MASH: " + str(button) + ", " + str(time) + "s")
+    global server
+    timePassed = 0
+    while timePassed < time:
+        server.press(button)
+        server.send()
+        time.sleep(0.1)
+        server.unpress(button)
+        server.send()
+        time.sleep(0.1)
+        timePassed += 0.2
+
 # Process commands
 def process_command(message: str, username: str):
     command = message.replace("\r","").replace("\n","").strip().split(" ")
@@ -247,6 +260,24 @@ def process_command(message: str, username: str):
             button_press(HIDButtons.Y, max(0, min(float(command[1]) / 10, 5)))
         else:
             button_press(HIDButtons.Y)
+        
+    # Mash Buttons
+    elif command[0] == "mash":
+        mashTime = 3
+        if len(command) == 3
+            mashTime = max(0, min(float(command[2]) / 10, 5))
+        if command[1] == "a":
+            mash_button(HIDButtons.A, mashTime)
+        elif command[1] == "b":
+            mash_button(HIDButtons.B, mashTime)
+        elif command[1] == "x":
+            mash_button(HIDButtons.X, mashTime)
+        elif command[1] == "y":
+            mash_button(HIDButtons.Y, mashTime)
+        elif command[1] == "l":
+            mash_button(HIDButtons.L, mashTime)
+        elif command[1] == "r":
+            mash_button(HIDButtons.R, mashTime)
 
     # Shoulder Buttons
     elif command[0] == "l":
