@@ -90,12 +90,19 @@ sock = socket.socket()
 lastMessageSent = datetime.now()
 def chat_connect():
     global sock, lastMessageSent
-    sock = socket.socket()
-    sock.connect((ENV["TWITCH_CHAT_HOST"], int(ENV["TWITCH_CHAT_PORT"])))
-    sock.send(("PASS " + ENV["TWITCH_BOT_OAUTH"] + "\n").encode("utf-8"))
-    sock.send(("NICK " + ENV["TWITCH_BOT_USERNAME"] + "\n").encode("utf-8"))
-    sock.send(("JOIN #" + ENV["TWITCH_CHAT_CHANNEL"] + "\n").encode("utf-8"))
-    lastMessageSent = datetime.now()
+    try:
+        sock = socket.socket()
+        sock.connect((ENV["TWITCH_CHAT_HOST"], int(ENV["TWITCH_CHAT_PORT"])))
+        sock.send(("PASS " + ENV["TWITCH_BOT_OAUTH"] + "\n").encode("utf-8"))
+        sock.send(("NICK " + ENV["TWITCH_BOT_USERNAME"] + "\n").encode("utf-8"))
+        sock.send(("JOIN #" + ENV["TWITCH_CHAT_CHANNEL"] + "\n").encode("utf-8"))
+        lastMessageSent = datetime.now()
+        print("Connected to chat successfully!")
+    except socket.error as e:
+        print(f"An error occurred when connecting to the chat: {e}")
+        print("Retrying in 5 seconds...")
+        sock.close()
+        time.sleep(1)
 chat_connect()
 
 # Command Queue
