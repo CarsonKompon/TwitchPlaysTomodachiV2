@@ -298,6 +298,12 @@ def process_command(message: str, username: str):
         else:
             button_press(HIDButtons.R)
 
+    # Start/Select Buttons
+    elif command[0] == "start":
+        button_press(HIDButtons.START)
+    elif command[0] == "select":
+        button_press(HIDButtons.SELECT)
+
     # D-Pad Commands
     elif command[0] == "up" or command[0] == "dup":
         if len(command) == 2:
@@ -406,9 +412,9 @@ def handle_command_queue():
             command = commandQueue.pop(0)
             try:
                 process_command(command["message"], command["username"])
-            except Exception as e: 
+                server.send()
+            except Exception as e:
                 print("Error processing command: " + str(e))
-        server.send()
         time.sleep(0.05)
 threadCommandQueueHandler = threading.Thread(target=handle_command_queue, daemon=True)
 threadCommandQueueHandler.start()
